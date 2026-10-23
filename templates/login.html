@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Login - SafeRoute{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h2>Login</h2>
+  <h2>👋 Welcome back</h2>
+  <h2>🚀 Create your account</h2>
+  <form method="post">
+    <label>Email <input type="email" name="email" required autofocus></label>
+    <label>Password <input type="password" name="password" required></label>
+    <button class="btn" type="submit">Login</button>
+  </form>
+  <p class="muted">New here? <a href="{{ url_for('register') }}">Create an account</a></p>
+</div>
+{% endblock %}

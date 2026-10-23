@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Feedback - SafeRoute{% endblock %}
+{% block content %}
+<div class="card narrow">
+  <h2>Your feedback</h2>
+  <form method="post">
+    <div class="stars">
+      {% for i in [5,4,3,2,1] %}
+        <input type="radio" id="s{{ i }}" name="rating" value="{{ i }}"><label for="s{{ i }}" title="{{ i }} stars">★</label>
+      {% endfor %}
+    </div>
+    <label>Comments <textarea name="comments" rows="4" placeholder="What can we improve?"></textarea></label>
+    <button class="btn" type="submit">Send feedback</button>
+  </form>
+</div>
+{% endblock %}

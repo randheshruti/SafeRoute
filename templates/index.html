@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="hero-text">
+    <span class="pill">✨ Smart &amp; safe route recommendation</span>
+    <h1>Travel smarter.<br><span class="grad">Travel safer.</span></h1>
+    <p>SafeRoute compares routes on a live map and recommends the one with the fewest reported incidents and risk zones, with safe places and emergency contacts always close by.</p>
+    <div class="row">
+      {% if session.user_id %}
+        <a class="btn big" href="{{ url_for('dashboard') }}">Plan a route &rarr;</a>
+      {% else %}
+        <a class="btn big" href="{{ url_for('register') }}">Get started free</a>
+        <a class="btn big ghost" href="{{ url_for('login') }}">Login</a>
+      {% endif %}
+      <a class="btn big ghost" href="#about">About us</a>
+    </div>
+  </div>
+  <svg class="hero-art" viewBox="0 0 400 300" aria-hidden="true">
+    <rect x="4" y="4" width="392" height="292" rx="22" class="art-bg"/>
+    <g class="art-grid"><path d="M0 75H400M0 150H400M0 225H400M100 0V300M200 0V300M300 0V300"/></g>
+    <path class="route-alt" d="M60 230 C120 230 140 120 200 150 S300 70 340 70"/>
+    <path class="route-safe" d="M60 230 C100 270 180 250 230 200 S320 120 340 70"/>
+    <circle cx="205" cy="148" r="26" class="risk"/>
+    <circle cx="60" cy="230" r="9" class="pt"/><circle cx="340" cy="70" r="9" class="pt end"/>
+    <circle cx="150" cy="255" r="7" class="safe"/><circle cx="290" cy="150" r="7" class="safe"/>
+  </svg>
+</section>
+
+<section class="stats reveal">
+  <div><b data-count="{{ stats.places }}">0</b><span>Safe places</span></div>
+  <div><b data-count="{{ stats.incidents }}">0</b><span>Incidents reported</span></div>
+  <div><b data-count="{{ stats.users }}">0</b><span>Community members</span></div>
+</section>
+
+<section class="section reveal">
+  <h2 class="title">Everything you need for a safer trip</h2>
+  <div class="grid">
+    <div class="card feature"><div class="ico">🗺️</div><h3>Safest route</h3><p>Compare alternative routes and see a clear risk rating for each one.</p></div>
+    <div class="card feature"><div class="ico">📍</div><h3>Safe places</h3><p>Hospitals, police stations and pharmacies shown right on the map.</p></div>
+    <div class="card feature"><div class="ico">🚨</div><h3>SOS record</h3><p>Save your location in one tap and quickly call your trusted contacts.</p></div>
+    <div class="card feature"><div class="ico">📝</div><h3>Incident reports</h3><p>Pin an incident on the map so other travellers can avoid the area.</p></div>
+    <div class="card feature"><div class="ico">⚠️</div><h3>Live alerts</h3><p>Read the latest safety alerts published by the admin team.</p></div>
+    <div class="card feature"><div class="ico">🎨</div><h3>Your style</h3><p>Switch dark mode and pick your favourite colour theme from the top bar.</p></div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2 class="title">How it works</h2>
+  <div class="steps">
+    <div class="step"><span>1</span><h3>Enter your trip</h3><p>Type where you are starting and where you want to go.</p></div>
+    <div class="step"><span>2</span><h3>Compare routes</h3><p>We rate each route using nearby incidents and risk zones.</p></div>
+    <div class="step"><span>3</span><h3>Go with confidence</h3><p>Follow the safest route and keep help one tap away.</p></div>
+  </div>
+</section>
+
+<section class="section about reveal" id="about">
+  <h2 class="title">About us</h2>
+  <div class="about-grid">
+    <div class="card">
+      <h3>Our mission</h3>
+      <p>The fastest route is not always the safest one. SafeRoute was created to help everyday travellers &mdash; students, commuters and people travelling alone &mdash; choose routes with more awareness and less worry.</p>
+      <p>By combining route planning with community incident reports, safe-place information and emergency contacts, SafeRoute puts useful safety information in one simple app.</p>
+      <div class="chips"><span>Python Flask</span><span>MySQL</span><span>Leaflet Maps</span><span>OpenStreetMap</span><span>HTML · CSS · JS</span></div>
+    </div>
+    <div class="values">
+      <div class="card"><h3>🤝 Community powered</h3><p>Every report from a user helps the next traveller.</p></div>
+      <div class="card"><h3>🔒 Privacy respected</h3><p>We store only the data the app needs, and passwords are hashed.</p></div>
+      <div class="card"><h3>💬 Honest about limits</h3><p>SOS saves a record and shows your contacts. It does not call emergency services.</p></div>
+      <div class="card dev"><div class="avatar">👩‍💻</div><div><h3>Shruti Randhe</h3><p class="muted">Developer &amp; Designer</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal">
+  <h2 class="title">Questions &amp; answers</h2>
+  <div class="faq">
+    <details><summary>How does SafeRoute choose the safest route?</summary><p>It gets alternative routes, then counts reported incidents and risk zones within 300 m of each route. The route with the fewest hazards is marked as safest.</p></details>
+    <details><summary>Does the SOS button call the police?</summary><p>No. It saves a record with your location and shows buttons to call your own emergency contacts. In an emergency, call your local emergency number.</p></details>
+    <details><summary>How do I add safe places or risk zones?</summary><p>Admins can add them from the Admin page by clicking on the map.</p></details>
+    <details><summary>Is my data safe?</summary><p>Passwords are stored as hashes and only logged-in users can see map data and submit reports.</p></details>
+  </div>
+</section>
+
+<section class="cta reveal">
+  <h2>Ready for a safer journey?</h2>
+  {% if session.user_id %}
+    <a class="btn big light" href="{{ url_for('dashboard') }}">Open route planner</a>
+  {% else %}
+    <a class="btn big light" href="{{ url_for('register') }}">Create your free account</a>
+  {% endif %}
+</section>
+{% endblock %}

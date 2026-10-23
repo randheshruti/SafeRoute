@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Admin - SafeRoute{% endblock %}
+{% block content %}
+{% macro del(table, id) %}
+<form method="post" action="{{ url_for('admin_delete', table=table, rid=id) }}" onsubmit="return confirm('Delete this record?')">
+  <button class="btn small ghost" type="submit">Delete</button>
+</form>
+{% endmacro %}
+<h2>Admin panel</h2>
+<div class="split">
+  <aside class="panel">
+    <p class="muted">Click the map to fill the latitude and longitude in the forms.</p>
+    <div class="card">
+      <h3>Add safe place</h3>
+      <form method="post" action="{{ url_for('admin_add', kind='safe_place') }}">
+        <input name="name" placeholder="Name" required>
+        <select name="category"><option>Hospital</option><option>Police station</option><option>Pharmacy</option><option>Fire station</option><option>Other</option></select>
+        <div class="row nowrap"><input class="lat" name="lat" placeholder="Lat" required><input class="lng" name="lng" placeholder="Lng" required></div>
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Add risk zone</h3>
+      <form method="post" action="{{ url_for('admin_add', kind='risk_zone') }}">
+        <input name="name" placeholder="Name" required>
+        <input name="description" placeholder="Why is it risky?">
+        <div class="row nowrap"><input class="lat" name="lat" placeholder="Lat" required><input class="lng" name="lng" placeholder="Lng" required></div>
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+    <div class="card">
+      <h3>Publish alert</h3>
+      <form method="post" action="{{ url_for('admin_add', kind='alert') }}">
+        <input name="title" placeholder="Title" required>
+        <textarea name="message" rows="3" placeholder="Message" required></textarea>
+        <button class="btn" type="submit">Publish</button>
+      </form>
+    </div>
+  </aside>
+  <div id="adminMap" class="map"></div>
+</div>
+
+<div class="tablewrap"><h3>Users</h3>
+<table><tr><th>ID</th><th>Name</th><th>Email</th><th>Admin</th></tr>
+{% for u in users %}<tr><td>{{ u.id }}</td><td>{{ u.name }}</td><td>{{ u.email }}</td><td>{{ 'Yes' if u.is_admin else 'No' }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>Incidents</h3>
+<table><tr><th>ID</th><th>User</th><th>Location</th><th>Description</th><th></th></tr>
+{% for i in incidents %}<tr><td>{{ i.id }}</td><td>{{ i.name }}</td><td>{{ i.location }}</td><td>{{ i.description }}</td><td>{{ del('incidents', i.id) }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>SOS records</h3>
+<table><tr><th>ID</th><th>User</th><th>Location</th><th>Details</th></tr>
+{% for s in sos %}<tr><td>{{ s.id }}</td><td>{{ s.name }}</td><td>{{ s.location }}</td><td>{{ s.details }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>Safe places</h3>
+<table><tr><th>ID</th><th>Name</th><th>Category</th><th>Lat, Lng</th><th></th></tr>
+{% for p in places %}<tr><td>{{ p.id }}</td><td>{{ p.name }}</td><td>{{ p.category }}</td><td>{{ p.lat }}, {{ p.lng }}</td><td>{{ del('safe_places', p.id) }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>Risk zones</h3>
+<table><tr><th>ID</th><th>Name</th><th>Description</th><th>Lat, Lng</th><th></th></tr>
+{% for z in zones %}<tr><td>{{ z.id }}</td><td>{{ z.name }}</td><td>{{ z.description }}</td><td>{{ z.lat }}, {{ z.lng }}</td><td>{{ del('risk_zones', z.id) }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>Alerts</h3>
+<table><tr><th>ID</th><th>Title</th><th>Message</th><th></th></tr>
+{% for a in alerts %}<tr><td>{{ a.id }}</td><td>{{ a.title }}</td><td>{{ a.message }}</td><td>{{ del('alerts', a.id) }}</td></tr>{% endfor %}</table></div>
+
+<div class="tablewrap"><h3>Feedback</h3>
+<table><tr><th>ID</th><th>User</th><th>Rating</th><th>Comments</th><th></th></tr>
+{% for f in feedback %}<tr><td>{{ f.id }}</td><td>{{ f.name }}</td><td>{{ '★' * f.rating }}</td><td>{{ f.comments }}</td><td>{{ del('feedback', f.id) }}</td></tr>{% endfor %}</table></div>
+{% endblock %}

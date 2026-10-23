@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}SafeRoute{% endblock %}</title>
+  <script>try{var d=document.documentElement;d.dataset.theme=localStorage.getItem('sr-theme')||'light';d.dataset.accent=localStorage.getItem('sr-accent')||'indigo';}catch(e){}</script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="nav">
+    <a class="brand" href="{{ url_for('index') }}"><span class="logo">🛡️</span> SafeRoute</a>
+    <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    <nav id="navLinks">
+      <a href="{{ url_for('index') }}#about">About</a>
+      {% if session.user_id %}
+        <a href="{{ url_for('dashboard') }}">Route</a>
+        <a href="{{ url_for('report') }}">Report</a>
+        <a href="{{ url_for('safety') }}">Alerts &amp; Contacts</a>
+        <a href="{{ url_for('feedback') }}">Feedback</a>
+        {% if session.is_admin %}<a href="{{ url_for('admin') }}">Admin</a>{% endif %}
+        <a href="{{ url_for('logout') }}" class="btn small ghost">Logout ({{ session.name }})</a>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}" class="btn small">Register</a>
+      {% endif %}
+      <span class="themebox">
+        <button id="themeBtn" class="icon-btn" title="Dark / light mode">🌙</button>
+        <button class="swatch" data-accent="indigo" title="Indigo"></button>
+        <button class="swatch" data-accent="teal" title="Teal"></button>
+        <button class="swatch" data-accent="rose" title="Rose"></button>
+        <button class="swatch" data-accent="amber" title="Amber"></button>
+      </span>
+    </nav>
+  </header>
+  <main class="container">
+    {% with msgs = get_flashed_messages(with_categories=true) %}
+      {% for cat, m in msgs %}<div class="flash {{ cat }}">{{ m }}</div>{% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="footer">
+    <b>🛡️ SafeRoute</b> &mdash; Smart and Safe Route Recommendation System<br>
+    <span>Python Flask &middot; MySQL &middot; Leaflet &middot; OpenStreetMap</span>
+  </footer>
+  <div id="toast"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>window.SR = {{ sr|tojson }};</script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

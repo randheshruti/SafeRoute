@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Report Incident - SafeRoute{% endblock %}
+{% block content %}
+<div class="split">
+  <aside class="panel">
+    <h2>Report an incident</h2>
+    <p class="muted">Click the map to pin where it happened.</p>
+    <form id="incidentForm">
+      <label>Place name / landmark <input id="location" type="text" required placeholder="e.g. Near the bus stop"></label>
+      <label>What happened? <textarea id="description" rows="4" required></textarea></label>
+      <input type="hidden" id="lat"><input type="hidden" id="lng">
+      <p id="pinInfo" class="muted">No pin selected (optional).</p>
+      <div class="row">
+        <button type="button" id="useLoc" class="btn ghost">📍 Use my location</button>
+        <button class="btn" type="submit">Submit report</button>
+      </div>
+    </form>
+    <h3>My recent reports</h3>
+    {% for r in mine %}
+      <div class="item"><b>{{ r.location }}</b><br>{{ r.description }}<br><span class="muted">{{ r.created_at }}</span></div>
+    {% else %}<p class="muted">You have not reported anything yet.</p>{% endfor %}
+  </aside>
+  <div id="reportMap" class="map"></div>
+</div>
+{% endblock %}

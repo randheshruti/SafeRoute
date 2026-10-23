@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Route Planner - SafeRoute{% endblock %}
+{% block content %}
+<div class="split">
+  <aside class="panel">
+    <h2>Plan a safe route</h2>
+    <form id="routeForm">
+      <label>From
+        <div class="row nowrap">
+          <input id="start" type="text" placeholder="Starting point" required>
+          <button type="button" id="useLoc" class="btn small ghost" title="Use my location">📍</button>
+        </div>
+      </label>
+      <label>To <input id="end" type="text" placeholder="Destination" required></label>
+      <button class="btn block" id="findBtn" type="submit">Find safest route</button>
+    </form>
+
+    <div id="results"></div>
+
+    <h3>Map layers</h3>
+    <label class="check"><input type="checkbox" id="layerSafe" checked> <span class="dot green"></span> Safe places</label>
+    <label class="check"><input type="checkbox" id="layerInc" checked> <span class="dot orange"></span> Reported incidents</label>
+    <label class="check"><input type="checkbox" id="layerRisk" checked> <span class="dot red"></span> Risk zones</label>
+
+    <h3>Emergency</h3>
+    <textarea id="sosNote" rows="2" placeholder="Optional note for your SOS record"></textarea>
+    <button class="btn danger block" id="sosBtn" type="button">🚨 Save SOS with my location</button>
+    <div id="sosPanel"></div>
+    <p class="muted small-text">The SOS button only saves a record in SafeRoute. It does <b>not</b> contact police or ambulance. In an emergency, call your local emergency number.</p>
+  </aside>
+  <div id="dashMap" class="map"></div>
+</div>
+{% endblock %}

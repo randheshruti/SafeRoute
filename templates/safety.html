@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Alerts & Contacts - SafeRoute{% endblock %}
+{% block content %}
+<div class="grid2">
+  <section>
+    <h2>⚠️ Safety alerts</h2>
+    {% for a in alerts %}
+      <div class="card alert"><h3>{{ a.title }}</h3><p>{{ a.message }}</p><span class="muted">{{ a.created_at }}</span></div>
+    {% else %}<p class="muted">No alerts right now.</p>{% endfor %}
+  </section>
+  <section>
+    <h2>📞 My emergency contacts</h2>
+    {% for c in contacts %}
+      <div class="item row between">
+        <div><b>{{ c.name }}</b> <span class="muted">{{ c.relationship or '' }}</span><br>{{ c.phone }}</div>
+        <div class="row nowrap">
+          <a class="btn small" href="tel:{{ c.phone }}">Call</a>
+          <form method="post" action="{{ url_for('delete_contact', cid=c.id) }}" onsubmit="return confirm('Remove this contact?')">
+            <button class="btn small ghost" type="submit">Remove</button>
+          </form>
+        </div>
+      </div>
+    {% else %}<p class="muted">No contacts yet. Add someone you trust.</p>{% endfor %}
+    <div class="card">
+      <h3>Add contact</h3>
+      <form method="post">
+        <label>Name <input type="text" name="name" required></label>
+        <label>Phone <input type="tel" name="phone" required></label>
+        <label>Relationship <input type="text" name="relationship" placeholder="e.g. Mother"></label>
+        <button class="btn" type="submit">Add</button>
+      </form>
+    </div>
+  </section>
+</div>
+{% endblock %}
